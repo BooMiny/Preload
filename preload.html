@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>图片的预加载</title>
+		<style>
+			html,body{
+				height: 100%;
+			}
+			a{
+				text-decoration: none;
+			}
+			.box {
+				text-align: center;
+			}
+			.btn {
+				display: inline-block;
+				height: 30px;
+				line-height: 30px;
+				border: 1px solid #ccc;
+				background-color: #fff;
+				padding: 0 10px;
+				margin-right: 50px;
+				color: #333;
+			}
+			.btn:hover {
+				background-color: #eee;
+			}
+			.loading {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #eee;
+				text-align: center;
+				font-size: 30px;
+			}
+			.progress {
+				margin-top: 300px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<img src="http://owb4977jg.bkt.clouddn.com/art.jpg"width="1200" alt="pic" id="img"/>
+			<p>
+				<a href="javascript:" class="btn" data-control = "prev">上一页</a>
+				<a href="javascript:" class="btn" data-control = "next">下一页</a>
+			</p>
+		</div>
+		
+		<div class="loading">
+			<p class="progress">0%</p>
+		</div>
+		
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script>
+			var imgs = [
+			    'http://owb4977jg.bkt.clouddn.com/csapa.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/dog.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/g5.png',
+			    'http://owb4977jg.bkt.clouddn.com/g2.png',
+			    'http://owb4977jg.bkt.clouddn.com/g1.png',
+			    'http://owb4977jg.bkt.clouddn.com/dogs.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/g6.png',
+			    'http://owb4977jg.bkt.clouddn.com/build.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/cars.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/creat.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/csapa.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/dog.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/dogs.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/dongwu.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/fengjin.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/fuli.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/g1.png',
+			    'http://owb4977jg.bkt.clouddn.com/g2.png',
+			    'http://owb4977jg.bkt.clouddn.com/g3.png',
+			    'http://owb4977jg.bkt.clouddn.com/g4.png',
+			    'http://owb4977jg.bkt.clouddn.com/g5.png',
+			    'http://owb4977jg.bkt.clouddn.com/g6.png',
+			    'http://owb4977jg.bkt.clouddn.com/g7.png',
+			    'http://owb4977jg.bkt.clouddn.com/g8.png',
+			    'http://owb4977jg.bkt.clouddn.com/game.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/hashiqi.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/life.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/liu.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/me.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/personal.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/qnzyz.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/samo.jpeg',
+			    'http://owb4977jg.bkt.clouddn.com/tra.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/words.jpg',
+			    'http://owb4977jg.bkt.clouddn.com/you.jpg'
+			];
+			
+			var index = 0;
+			var len = imgs.length;
+			var count = 0;
+			var $progress = $('.progress');
+			
+			$.each(imgs, function(i,src) {
+				var imgObj = new Image();
+				
+				$(imgObj).on('load error',function(){
+					$progress.html(Math.round((count + 1) / len * 100) + '%');
+					
+					if(count >= len-1) {
+						$('.loading').hide();
+						document.title = '1/' + len;
+					}
+					count++;
+				});
+				imgObj.src = src;
+			});
+			
+			$('.btn').on('click',function(){
+				if('prev' === $(this).data('control')){
+					index = Math.max(0,--index);
+				}else{
+					index = Math.min(len-1,++index);
+				}
+				document.title = (index + 1) + '/' + len;
+				$('#img').attr('src',imgs[index]);
+			});
+		</script>
+	</body>
+</html>
